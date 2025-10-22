@@ -1,11 +1,22 @@
+import { useNavigate } from 'react-router-dom';
+import { useMovements } from '../context/MovementsContext';
+import MovementForm from '../components/MovementForm';
+
 export default function New() {
-    return (
-      <div className="container mt-16">
-        <div className="card">
-          <h2>Nuevo movimiento</h2>
-          <p className="meta">Semana 2: aca va el formulario (Formik/Yup).</p>
-        </div>
-      </div>
-    );
-  }
+  const navigate = useNavigate();
+  const { add } = useMovements();
+
+  const handleSubmit = (values) => {
+    add(values);
+    navigate('/'); // volver al listado
+  };
+
+  return (
+    <section>
+      <h1>Nuevo movimiento</h1>
+      <MovementForm onSubmit={handleSubmit} onCancel={() => navigate('/')} />
+    </section>
+  );
+}
+
   
