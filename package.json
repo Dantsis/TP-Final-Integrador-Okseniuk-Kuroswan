@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "react-router-dom": "^7.9.4"
+  },
+  "devDependencies": {
+    "eslint": "^9.38.0"
   }
 }
