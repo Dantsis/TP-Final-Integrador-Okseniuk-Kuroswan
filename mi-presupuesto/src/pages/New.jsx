@@ -1,22 +1,23 @@
-import { useNavigate } from 'react-router-dom';
-import { useMovements } from '../context/MovementsContext';
 import MovementForm from '../components/MovementForm';
 
-export default function New() {
-  const navigate = useNavigate();
-  const { add } = useMovements();
+const todayISO = () => new Date().toISOString().slice(0,10);
 
-  const handleSubmit = (values) => {
-    add(values);
-    navigate('/'); // volver al listado
+export default function New() {
+  const initialValues = {
+    description: '',
+    category: '',
+    type: '',
+    amount: '',
+    date: todayISO(),
   };
 
   return (
-    <section>
-      <h1>Nuevo movimiento</h1>
-      <MovementForm onSubmit={handleSubmit} onCancel={() => navigate('/')} />
-    </section>
+    <div className="container mt-16">
+      <h2 style={{ marginBottom: 12 }}>Nuevo movimiento</h2>
+      <MovementForm initialValues={initialValues} mode="create" />
+    </div>
   );
 }
+
 
   

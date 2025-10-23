@@ -1,43 +1,29 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { useMovements } from '../context/MovementsContext';
 import MovementForm from '../components/MovementForm';
-import { useMemo } from 'react';
 
 export default function Edit() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { getById, update, remove } = useMovements();
+  const { byId } = useMovements();
+  const item = byId(id);
 
-  const current = useMemo(() => getById(id), [id, getById]);
-
-  if (!current) {
-    return <p>No se encontró el movimiento.</p>;
+  if (!item) {
+    return <Navigate to="/" replace />;
   }
 
-  const handleSubmit = (values) => {
-    update(id, values);
-    navigate('/');
-  };
-
-  const handleDelete = () => {
-    if (confirm('¿Eliminar este registro?')) {
-      remove(id);
-      navigate('/');
-    }
+  const initialValues = {
+    description: item.description,
+    category: item.category,
+    type: item.type,
+    amount: String(item.amount),
+    date: item.date,
   };
 
   return (
-    <section>
-      <h1>Editar movimiento</h1>
-      <MovementForm
-        initial={current}
-        onSubmit={handleSubmit}
-        onCancel={() => navigate('/')}
-      />
-      <button onClick={handleDelete} className="danger" style={{ marginTop: 12 }}>
-        Eliminar
-      </button>
-    </section>
+    <div className="container mt-16">
+      <h2 style={{ marginBottom: 12 }}>Editar movimiento</h2>
+      <MovementForm initialValues={initialValues} mode="edit" id={id} />
+    </div>
   );
 }
 
